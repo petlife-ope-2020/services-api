@@ -1,0 +1,6 @@
+import os
+
+
+# MongoDB
+MONGO_CONNECTION_STRING = str(os.environ.get('MONGO_CONNECTION_STRING'))
+SERVICES_COLLECTION = str(os.environ.get('MONGO_SERVICES_COLLECTION'))
