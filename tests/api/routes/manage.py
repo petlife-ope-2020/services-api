@@ -23,6 +23,10 @@ class ManageTestCase(unittest.TestCase):
         self.mocks['addition_service_mock'] = addition_service_patch.start()
         self.patches.append(addition_service_patch)
 
+        removal_service_patch = patch('services.api.routes.manage.RemovalService')
+        self.mocks['removal_service_mock'] = removal_service_patch.start()
+        self.patches.append(removal_service_patch)
+
     def tearDown(self):
         for patch_ in self.patches:
             patch_.stop()
@@ -40,3 +44,10 @@ class ManageTestCase(unittest.TestCase):
 
         # Assert
         self.mocks['addition_service_mock'].return_value.add.assert_called()
+
+    def test_delete_removal_service_call(self):
+        # Act
+        Manage.delete()
+
+        # Assert
+        self.mocks['removal_service_mock'].return_value.remove.assert_called()

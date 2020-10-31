@@ -118,3 +118,69 @@ class MongoAdapterTestCase(unittest.TestCase):
         # Act & Assert
         with self.assertRaises(RuntimeError):
             MongoAdapter.add_self(mock_self, doc)
+
+    def test_remove_self_not_updated_raises_key_error(self):
+        # Setup
+        mock_self = MagicMock()
+        doc = {'service_id': 'test_id', 'petshop_username': 'PetTest'}
+        mock_self.db_.find_one_and_update.return_value = None
+
+        # Act & Assert
+        with self.assertRaises(KeyError):
+            MongoAdapter.remove_self(mock_self, doc)
+
+    def test_remove_self_updated_returns_updated_doc(self):
+        # Setup
+        mock_self = MagicMock()
+        doc = {'service_id': 'test_id', 'petshop_username': 'PetTest'}
+        mock_self.db_.find_one_and_update.return_value = \
+            {'_id': 'test_id'}
+
+        # Act
+        result = MongoAdapter.remove_self(mock_self, doc)
+
+        # Assert
+        self.assertEqual(result, {'_id': 'test_id'})
+
+    def test_remove_self_unexpected_error_raises_runtime_error(self):
+        # Setup
+        mock_self = MagicMock()
+        mock_self.db_.find_one_and_update.side_effect = PyMongoError
+        doc = {'service_id': 'test_id', 'petshop_username': 'PetTest'}
+
+        # Act & Assert
+        with self.assertRaises(RuntimeError):
+            MongoAdapter.remove_self(mock_self, doc)
+
+    def test_delete_service_successful_run_returns_nothing(self):
+        # Setup
+        mock_self = MagicMock()
+        _id = 'test_id'
+
+        # Act
+        MongoAdapter.delete_service(mock_self, _id)
+
+        # Assert
+        mock_self.db_.delete_one.assert_called_with({
+            '_id': self.mocks['object_id_mock'].return_value
+        })
+
+    def test_delete_service_not_found_raises_key_error(self):
+        # Setup
+        mock_self = MagicMock()
+        _id = 'test_id'
+        mock_self.db_.delete_one.return_value = MagicMock(deleted_count=0)
+
+        # Act & Assert
+        with self.assertRaises(KeyError):
+            MongoAdapter.delete_service(mock_self, _id)
+
+    def test_delete_service_unexpected_error_raises_runtime_error(self):
+        # Setup
+        mock_self = MagicMock()
+        _id = 'test_id'
+        mock_self.db_.delete_one.side_effect = PyMongoError
+
+        # Act & Assert
+        with self.assertRaises(RuntimeError):
+            MongoAdapter.delete_service(mock_self, _id)

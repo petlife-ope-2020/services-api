@@ -2,6 +2,7 @@ from flask_restful import Resource
 
 from services.api.services.creation import CreationService
 from services.api.services.addition import AdditionService
+from services.api.services.removal import RemovalService
 
 
 class Manage(Resource):
@@ -16,3 +17,8 @@ class Manage(Resource):
     def put():
         service = AdditionService()
         return service.add()
+
+    @staticmethod
+    def delete():
+        service = RemovalService()
+        return service.remove()

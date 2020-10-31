@@ -68,3 +68,59 @@ class MongoAdapter:
         except PyMongoError as error:
             print(f'Error when performing update on MongoDB: {error}')
             raise RuntimeError from error
+
+    def remove_self(self, doc):
+        """ Removes a petshop as a provider of a service
+
+            Args:
+                doc (dict): The petshop object to be deleted
+
+            Raises:
+                KeyError: If the service_id is incorrect
+                RuntimeError: If an unexpected error occurs
+
+            Returns:
+                updated_doc (dict): Service object without sender as a provider
+        """
+        filter_ = {'_id': ObjectId(doc['service_id'])}
+        del doc['service_id']
+        try:
+            updated_doc = self.db_.find_one_and_update(
+                filter_,
+                {'$pull':{
+                    'available_in': {
+                        'petshop_username': doc['petshop_username']
+                    }
+                }},
+                return_document=ReturnDocument.AFTER
+            )
+            if not updated_doc:
+                raise KeyError('No such object in collection')
+
+            updated_doc['_id'] = str(updated_doc['_id'])
+            return updated_doc
+
+        except PyMongoError as error:
+            print(f'Error when performing update on MongoDB: {error}')
+            raise RuntimeError from error
+
+    def delete_service(self, doc_id):
+        """ Deletes a service in the collection
+
+            Args:
+                doc_id (str): The id of the service to be deleted
+
+            Raises:
+                KeyError: If the service_id is incorrect
+                RuntimeError: If an unexpected error occurs
+        """
+        filter_ = {'_id': ObjectId(doc_id)}
+        try:
+            deleted = self.db_.delete_one(filter_)
+
+            if deleted.deleted_count == 0:
+                raise KeyError('No such object in collection.')
+
+        except PyMongoError as error:
+            print(f'Error when performing deletion on MongoDB: {error}')
+            raise RuntimeError from error
