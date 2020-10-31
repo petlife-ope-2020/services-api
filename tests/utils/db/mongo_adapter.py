@@ -101,7 +101,7 @@ class MongoAdapterTestCase(unittest.TestCase):
         mock_self = MagicMock()
         doc = {'service_id': 'test_id'}
         mock_self.db_.find_one_and_update.return_value = \
-            {'_id': 'test_id'}
+            {'_id': 'test_id', 'ngrams': ''}
 
         # Act
         result = MongoAdapter.add_self(mock_self, doc)
@@ -134,7 +134,7 @@ class MongoAdapterTestCase(unittest.TestCase):
         mock_self = MagicMock()
         doc = {'service_id': 'test_id', 'petshop_username': 'PetTest'}
         mock_self.db_.find_one_and_update.return_value = \
-            {'_id': 'test_id'}
+            {'_id': 'test_id', 'ngrams': ''}
 
         # Act
         result = MongoAdapter.remove_self(mock_self, doc)
@@ -184,3 +184,38 @@ class MongoAdapterTestCase(unittest.TestCase):
         # Act & Assert
         with self.assertRaises(RuntimeError):
             MongoAdapter.delete_service(mock_self, _id)
+
+    def test_get_service_by_name_empty_query_returns_result_list(self):
+        # Setup
+        mock_self = MagicMock()
+        mock_ngrams = ''
+
+        # Act
+        result = MongoAdapter.get_service_by_name(mock_self, mock_ngrams)
+
+        # Assert
+        self.assertEqual(result, mock_self._find.return_value)
+
+    def test_get_service_by_name_some_query_returns_nothing_raises_keyerror(self):
+        # Setup
+        mock_self = MagicMock()
+        mock_ngrams = 'some query'
+        mock_self._find.return_value = ''
+
+        # Act & Assert
+        with self.assertRaises(KeyError):
+            MongoAdapter.get_service_by_name(mock_self, mock_ngrams)
+
+    def test_find_some_query_returns_result_list(self):
+        # Setup
+        mock_self = MagicMock()
+        query = {}
+        mock_self.db_.find.return_value = [
+            {'_id': 'test_id', 'ngrams': 'n g r a m s', 'other': 'fields'}
+        ]
+
+        # Act
+        results = MongoAdapter._find(mock_self, query)
+
+        # Assert
+        self.assertEqual(results, [{'_id': 'test_id', 'other': 'fields'}])

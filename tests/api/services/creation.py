@@ -31,6 +31,10 @@ class CreationServiceTestCase(unittest.TestCase):
         self.mocks['parser_mock'] = parser_patch.start()
         self.patches.append(parser_patch)
 
+        mk_ngrams_patch = patch('services.api.services.creation.make_ngrams')
+        self.mocks['mk_ngrams_mock'] = mk_ngrams_patch.start()
+        self.patches.append(mk_ngrams_patch)
+
     def tearDown(self):
         for patch_ in self.patches:
             patch_.stop()
@@ -50,6 +54,7 @@ class CreationServiceTestCase(unittest.TestCase):
         mock_self = MagicMock(
             parser=MagicMock(field={'service_name': 'test123'})
         )
+        self.mocks['mk_ngrams_mock'].return_value = 'hey'
 
         # Act
         CreationService.create(mock_self)
@@ -58,9 +63,9 @@ class CreationServiceTestCase(unittest.TestCase):
         mock_self._check_naming_pattern.assert_called_with(
             'test123'
         )
-        mock_self._insert_in_mongo.assert_called_with(
-            {'service_name': 'test123'}
-        )
+        mock_self._insert_in_mongo.assert_called_with({
+            'service_name': 'test123', 'ngrams': 'hey'
+        })
         self.mocks['jsonify_mock'].assert_called()
 
     def test_check_naming_pattern_no_match_abort(self):

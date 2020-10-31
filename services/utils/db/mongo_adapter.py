@@ -63,6 +63,7 @@ class MongoAdapter:
                 raise KeyError('No such object in collection')
 
             updated_doc['_id'] = str(updated_doc['_id'])
+            del updated_doc['ngrams']
             return updated_doc
 
         except PyMongoError as error:
@@ -98,6 +99,7 @@ class MongoAdapter:
                 raise KeyError('No such object in collection')
 
             updated_doc['_id'] = str(updated_doc['_id'])
+            del updated_doc['ngrams']
             return updated_doc
 
         except PyMongoError as error:
@@ -124,3 +126,52 @@ class MongoAdapter:
         except PyMongoError as error:
             print(f'Error when performing deletion on MongoDB: {error}')
             raise RuntimeError from error
+
+    def get_service_by_name(self, name_ngrams):
+        """ Searches through the ngrams text index,
+            returning every item that matches the query
+
+            Args:
+                name_ngrams (str): The ngrams made out of the user sent query
+
+            Raises:
+                KeyError: If no services match the query
+
+            Returns:
+                result_list (list): List of services matching the query
+        """
+        if name_ngrams.strip() == '':
+            query = {}
+        else:
+            query = {'$text': {'$search': name_ngrams}}
+
+        result_list = self._find(query)
+
+        if not result_list:
+            raise KeyError('Service not found.')
+
+        return result_list
+
+    def _find(self, query):
+        """ Performs a search on MongoDB with the provided query
+            and returns all objects that match it, removing the ngrams field
+            and stringifying the _id for better user handling
+
+            Args:
+                query (dict): A MongoDB style query
+
+            Returns:
+                results (list): Acts as an interface between
+                the returned cursor object and and the rest of the
+                application, stringifying the objectId from the _id field
+                and removing unnecessary information like the ngrams field
+        """
+        results = []
+        search_result = self.db_.find(query)
+
+        for doc in search_result:
+            doc['_id'] = str(doc['_id'])
+            del doc['ngrams']
+            results.append(doc)
+
+        return results
