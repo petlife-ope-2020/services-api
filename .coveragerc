@@ -1,6 +1,6 @@
 [run]
 source = services/
-omit = */__init__.py
+omit = */__init__.py, services/app.py
 
 [report]
 fail_under=90

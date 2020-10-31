@@ -3,6 +3,7 @@ import re
 from flask_restful import abort
 from flask.json import jsonify
 
+from services.utils.ngrams import make_ngrams
 from services.utils.db.adapter_factory import get_mongo_adapter
 from services.api.body_parsers.creation import CreationParser
 
@@ -28,6 +29,7 @@ class CreationService:
         """
         doc = self.parser.field
         self._check_naming_pattern(doc['service_name'])
+        doc['ngrams'] = make_ngrams(doc['service_name'])
         new_service_id = self._insert_in_mongo(doc)
         return jsonify(new_service_id)
 
