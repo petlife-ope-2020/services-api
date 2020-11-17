@@ -26,13 +26,13 @@ class RemovalParserTestCase(unittest.TestCase):
             call(
                 name='petshop_username',
                 type=str,
-                location='form',
+                location='args',
                 required=True
             ),
             call(
                 name='service_id',
                 type=str,
-                location='form',
+                location='args',
                 required=True
             )
         ]
