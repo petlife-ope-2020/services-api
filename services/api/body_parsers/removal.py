@@ -8,8 +8,8 @@ class RemovalParser:
     def __init__(self):
         parser = RequestParser()
         fields = [
-            {'name': 'petshop_username', 'type': str, 'location': 'form', 'required': True},
-            {'name': 'service_id', 'type': str, 'location': 'form', 'required': True}
+            {'name': 'petshop_username', 'type': str, 'location': 'args', 'required': True},
+            {'name': 'service_id', 'type': str, 'location': 'args', 'required': True}
         ]
         for field in fields:
             parser.add_argument(**field)
