@@ -177,14 +177,7 @@ No such object in collection
 ```
 
 ## Petshop Removal ##
-`DELETE /manage`
-
-*Request body:*
-Form data
-```
-petshop_username: "petxuser123"
-service_id: "5f9d6594448854f39b13d386"
-```
+`DELETE /manage?petshop_username="petshop_username"&service_id="5f9d6594448854f39b13d386"`
 
 *Responses:*
 
