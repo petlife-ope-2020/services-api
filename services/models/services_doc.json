@@ -1,0 +1,19 @@
+{
+    "service_name": "Banho",
+    "ngrams": "Ban anho Banho nho anh Banh",
+    "_id": "must_be_unique",
+    "available_in": [
+        {
+            "petshop_username": "1 - same as in shops_collection",
+            "petshop_name": "1 - same as in shops_collection"
+        },
+        {
+            "petshop_username": "2 - same as in shops_collection",
+            "petshop_name": "2 - same as in shops_collection"
+        },
+        {
+            "petshop_username": "3 - same as in shops_collection",
+            "petshop_name": "3 - same as in shops_collection"
+        }
+    ]
+}
