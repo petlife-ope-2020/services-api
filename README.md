@@ -30,7 +30,7 @@ $ export $(cat .env | xargs)
 5 - Finally, start the application:
 
 ```
-$ python3.7 -m services.app
+$ python -m services.app
 ```
 
 # Use cases and endpoints #
@@ -47,43 +47,15 @@ Returns list of services matching the query (If blank, returns all services on D
 ```JSON
 [
     {
-        "_id": "5f9d6594448854f39b13d386",
-        "service_name": "Banho",
+        "_id": "string",
+        "service_name": "string",
         "available_in": [
             {
-                "petshop_username": "petxuser123",
-                "petshop_name": "PetX Centro"
+                "petshop_username": "string",
+                "petshop_name": "string"
             },
-            {
-                "petshop_username": "petxuser456",
-                "petshop_name": "PetX Osasco"
-            },
-            {
-                "petshop_username": "petxuser789",
-                "petshop_name": "PetX Diadema"
-            }
         ]
     },
-    {
-        "_id": "5f9d66d36dd2f5650c0fb8f8",
-        "service_name": "Exame de sangue",
-        "available_in": [
-            {
-                "petshop_username": "petxuser123",
-                "petshop_name": "PetX Centro"
-            }
-        ]
-    },
-    {
-        "_id": "5f9d66f26dd2f5650c0fb8f9",
-        "service_name": "Vacina contra raiva",
-        "available_in": [
-            {
-                "petshop_username": "petxuser456",
-                "petshop_name": "PetX Osasco"
-            }
-        ]
-    }
 ]
 ```
 
@@ -107,9 +79,11 @@ Service not found
 `POST /manage`
 
 *Request body:*
-Form data
-```
-service_name: "Banho"
+JSON
+```json
+{
+    "service_name": "string"
+}
 ```
 
 *Responses:*
@@ -119,7 +93,7 @@ service_name: "Banho"
 Returns newly created service's id
 
 ```JSON
-"5f9d6594448854f39b13d386"
+"string"
 ```
 
 `403 Forbidden`
@@ -142,11 +116,13 @@ Service already exists
 `PUT /manage`
 
 *Request body:*
-Form data
-```
-petshop_name: "PetX Osasco"
-petshop_username: "petxuser456"
-service_id: "5f9d6594448854f39b13d386"
+JSON
+```json
+{
+    "petshop_name": "string",
+    "petshop_username": "string",
+    "service_id": "string"
+}
 ```
 
 *Responses:*
@@ -157,14 +133,14 @@ Returns updated service object
 
 ```JSON
 {
-    "_id": "5f9d6594448854f39b13d386",
+    "_id": "string",
     "available_in": [
         {
-            "petshop_name": "PetX Osasco",
-            "petshop_username": "petxuser456"
+            "petshop_name": "string",
+            "petshop_username": "string"
         }
     ],
-    "service_name": "Banho"
+    "service_name": "string"
 }
 ```
 
@@ -177,7 +153,7 @@ No such object in collection
 ```
 
 ## Petshop Removal ##
-`DELETE /manage?petshop_username="petshop_username"&service_id="5f9d6594448854f39b13d386"`
+`DELETE /manage?petshop_username=petshop_username&service_id=service_id`
 
 *Responses:*
 
@@ -187,14 +163,14 @@ Returns updated service object (without the sender in the available_in list)
 
 ```JSON
 {
-    "_id": "5f9d6594448854f39b13d386",
+    "_id": "string",
     "available_in": [
         {
-            "petshop_name": "PetX Osasco",
-            "petshop_username": "petxuser456"
+            "petshop_name": "string",
+            "petshop_username": "string"
         }
     ],
-    "service_name": "Banho"
+    "service_name": "string"
 }
 ```
 

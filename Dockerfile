@@ -12,4 +12,4 @@ COPY --chown=worker:worker requirements.txt requirements.txt
 RUN pip install --user -r requirements.txt
 
 COPY --chown=worker:worker services services
-ENTRYPOINT python3.7 -m services.app
+ENTRYPOINT python -m services.app

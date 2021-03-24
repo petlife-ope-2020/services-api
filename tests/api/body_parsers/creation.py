@@ -31,6 +31,6 @@ class CreationParserTestCase(unittest.TestCase):
             add_argument.assert_called_with(
                 name='service_name',
                 type=str,
-                location='form',
+                location='json',
                 required=True
             )
