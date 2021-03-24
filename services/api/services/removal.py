@@ -5,6 +5,7 @@ from services.utils.db.adapter_factory import get_mongo_adapter
 from services.api.body_parsers.removal import RemovalParser
 
 
+# pylint: disable=inconsistent-return-statements
 class RemovalService:
     """ For a petshop to remove itself from
         the providers list of a service,

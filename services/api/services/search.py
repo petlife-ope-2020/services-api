@@ -7,6 +7,7 @@ from services.utils.db.adapter_factory import get_mongo_adapter
 from services.api.body_parsers.search import SearchParser
 
 
+# pylint: disable=inconsistent-return-statements
 class SearchService:
     """ Searches for services on MongoDB using the ngrams text index
         for a fuzzy search capability.
