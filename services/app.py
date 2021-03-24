@@ -22,4 +22,5 @@ API.add_resource(Manage, '/manage')
 API.add_resource(Search, '/search')
 
 if __name__ == '__main__':
+    print(f'Server running on port {PORT}')
     SERVER.safe_start()

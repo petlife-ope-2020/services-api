@@ -10,7 +10,7 @@ class CreationParser:
         parser.add_argument(
             name='service_name',
             type=str,
-            location='form',
+            location='json',
             required=True
         )
         self.field = parser.parse_args()

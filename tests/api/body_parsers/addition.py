@@ -26,19 +26,19 @@ class AdditionParserTestCase(unittest.TestCase):
             call(
                 name='service_id',
                 type=str,
-                location='form',
+                location='json',
                 required=True
             ),
             call(
                 name='petshop_username',
                 type=str,
-                location='form',
+                location='json',
                 required=True
             ),
             call(
                 name='petshop_name',
                 type=str,
-                location='form',
+                location='json',
                 required=True
             )
         ]
