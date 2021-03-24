@@ -8,6 +8,7 @@ from services.utils.db.adapter_factory import get_mongo_adapter
 from services.api.body_parsers.creation import CreationParser
 
 
+# pylint: disable=inconsistent-return-statements
 class CreationService:
     """ Service for creating a service object.
         This will be called when a shop wants to provide a service

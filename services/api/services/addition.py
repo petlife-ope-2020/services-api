@@ -5,6 +5,7 @@ from services.utils.db.adapter_factory import get_mongo_adapter
 from services.api.body_parsers.addition import AdditionParser
 
 
+# pylint: disable=inconsistent-return-statements
 class AdditionService:
     """ Service for a shop to add itself as a provider of a listed service.
     """
